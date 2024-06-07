@@ -4,7 +4,12 @@ public class FamilyRole
 {
     public FamilyRole()
     {
-        
+        Id = Guid.NewGuid();
+    }
+
+    public FamilyRole(string name) : this()
+    {
+        Name = name;
     }
 
     public Guid Id { get; set; }

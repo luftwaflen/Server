@@ -8,11 +8,13 @@ public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
     private readonly IFamilyRepository _familyRepository;
+    private readonly IFamilyRolesRepository _familyRolesRepository;
 
-    public UserService(IUserRepository userRepository, IFamilyRepository familyRepository)
+    public UserService(IUserRepository userRepository, IFamilyRepository familyRepository, IFamilyRolesRepository familyRolesRepository)
     {
         _userRepository = userRepository;
         _familyRepository = familyRepository;
+        _familyRolesRepository = familyRolesRepository;
     }
 
     public async Task<User> LoginAsync(string login, string password)
@@ -28,14 +30,38 @@ public class UserService : IUserService
         return user;
     }
 
-    public async Task<List<User>> CreateFamily(string name, User user, FamilyRole role)
+    public async Task<User> GetUserByLogin(string login)
     {
+        var user = await _userRepository.GetUserByLoginAsync(login);
+        return user;
+    }
+
+    public async Task<List<User>> CreateFamily(string name, User user)
+    {
+        var role = await _familyRolesRepository.GetFamilyRoleByNameAsync("creator");
         var family = new Family(name, user, role);
         await _familyRepository.AddAsync(family);
         user.Family = family;
         user.FamilyRole = role;
         await _userRepository.UpdateAsync(user);
         return family.FamilyMembers;
+    }
+
+    public async Task<List<User>> GetFamily(Guid userId)
+    {
+        var user = await _userRepository.GetUserByIdAsync(userId);
+        return user.Family.FamilyMembers;
+    }
+
+    public async Task<List<User>> InviteToFamily(Guid familyId, Guid userId)
+    {
+        var role = await _familyRolesRepository.GetFamilyRoleByNameAsync("member");
+        var family = await _familyRepository.GetFamilyByIdAsync(familyId);
+        var user = await _userRepository.GetUserByIdAsync(userId);
+        user.Family ??= family;
+        user.FamilyRole = role;
+        await _userRepository.UpdateAsync(user);
+        return user.Family.FamilyMembers;
     }
 
     public async Task<IEnumerable<User>> GetAllAsync()

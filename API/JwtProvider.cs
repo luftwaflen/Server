@@ -7,12 +7,13 @@ namespace API;
 
 public static class JwtProvider
 {
-    public static async Task<string> GetJwt(Guid id, UserRoles role)
+    public static async Task<string> GetJwt(Guid id, Guid userId, UserRoles role)
     {
         //Claim[] claims = [new("userId", id.ToString()), new("userRole", role.ToString())];
         var claims = new List<Claim>
         {
             new(ClaimsIdentity.DefaultNameClaimType, id.ToString()),
+            new Claim("userId", userId.ToString()),
             new(ClaimsIdentity.DefaultRoleClaimType, role.ToString())
         };
 

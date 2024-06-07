@@ -16,6 +16,15 @@ public class Doctor
         RecipeRelations = new List<RecipeRelation>();
     }
 
+    public Doctor(User user, string firstName, string secondName) : this()
+    {
+        User = user;
+        FirstName = firstName;
+        SecondName = secondName;
+        Patients = new List<Patient>();
+        RecipeRelations = new List<RecipeRelation>();
+    }
+
     public Guid Id { get; set; }
     public virtual User User { get; set; }
     public string FirstName { get; set; }

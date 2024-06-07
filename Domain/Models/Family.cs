@@ -11,6 +11,7 @@ public class Family
     public Family(string name, User user, FamilyRole familyRole) : this()
     {
         FamilyMembers.Add(user);
+        Name = name;
         user.FamilyRole = familyRole;
     }
 

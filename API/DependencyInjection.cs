@@ -19,6 +19,8 @@ public static class DependencyInjection
         services.AddScoped<IRecipeRelationRepository, RecipeRelationRepository>();
         services.AddScoped<IFamilyRepository, FamilyRepository>();
         services.AddScoped<IFamilyRolesRepository, FamilyRolesRepository>();
+        services.AddScoped<IMessageRepository, MessageRepository>();
+        services.AddScoped<IChatRepository, ChatRepository>();
 
         return services;
     }
@@ -29,6 +31,7 @@ public static class DependencyInjection
         services.AddScoped<IAdminService, AdminService>();
         services.AddScoped<IDoctorService, DoctorService>();
         services.AddScoped<IPatientService, PatientService>();
+        services.AddScoped<IChatService, ChatService>();
 
         return services;
     }

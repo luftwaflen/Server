@@ -16,4 +16,11 @@ public class FamilyRolesRepository : BaseRepository<FamilyRole>, IFamilyRolesRep
 
         return familyRole;
     }
+
+    public async Task<FamilyRole> GetFamilyRoleByNameAsync(string name)
+    {
+        var familyRole = await _db.FamilyRoles.FirstOrDefaultAsync(u => u.Name == name);
+
+        return familyRole;
+    }
 }

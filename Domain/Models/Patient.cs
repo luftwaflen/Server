@@ -15,6 +15,14 @@ public class Patient
         PersonalDoctor = null;
     }
 
+    public Patient(User user) : this()
+    {
+        User = user;
+        Diary = new Diary(this);
+        RecipeRelations = new List<RecipeRelation>();
+        PersonalDoctor = null;
+    }
+
     public Guid Id { get; set; }
     public virtual User User { get; set; }
     public virtual Diary Diary { get; set; }
